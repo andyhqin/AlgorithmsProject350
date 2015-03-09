@@ -10,17 +10,13 @@ def calculate_least_adjacent_cost(adjacency_list, i, v, cache):
         least_adjacent_cost = adjacent_cost
     return least_adjacent_cost
 
-file = open(os.path.dirname(os.path.realpath(__file__)) + "/g_small3.txt")
+file = open(os.path.dirname(os.path.realpath(__file__)) + "/g_test.txt")
 vertices, edges = map(lambda x: int(x), file.readline().replace("\n", "").split(" "))
 
 adjacency_list = [[] for k in xrange(vertices)]
 for line in file.readlines():
     tail, head, weight = line.split(" ")
-    if int(weight) < 0:
-        weightTempInt = int(weight) * -1
-    else:
-	weightTempInt = int(weight)
-    adjacency_list[int(head)-1].append({"from" : int(tail), "weight" : weightTempInt})
+    adjacency_list[int(head)-1].append({"from" : int(tail), "weight" : int(weight)})
 
 s=0
 cache = [[] for j in xrange(vertices+1)]
@@ -45,6 +41,7 @@ for v in range(0, vertices):
 
 if(not cache == previous_cache):
     raise Exception("negative cycle detected")
-    
+
+cache[0] = float("inf")
 shortest_path = min(cache)
 print("Shortest Path: " + str(shortest_path))  
